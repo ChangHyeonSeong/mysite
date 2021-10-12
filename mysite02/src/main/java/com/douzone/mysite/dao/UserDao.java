@@ -82,10 +82,9 @@ public class UserDao {
 				Long no = rs.getLong(1);
 				String name = rs.getString(2);
 				
-				
 				vo = new UserVo();
 				vo.setNo(no);
-				vo.setPassword(name);
+				vo.setName(name);
 			
 				
 				
