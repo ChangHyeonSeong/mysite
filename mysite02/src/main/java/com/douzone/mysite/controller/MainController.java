@@ -2,11 +2,14 @@ package com.douzone.mysite.controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.douzone.mysite.mvc.main.MainActionFactory;
+import com.douzone.web.mvc.Action;
+import com.douzone.web.mvc.ActionFactory;
 
 
 public class MainController extends HttpServlet {
@@ -18,9 +21,12 @@ public class MainController extends HttpServlet {
 		
 		System.out.println("Main Controller Called");
 		
-		//MvcUtil
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/main/index.jsp");
-		rd.forward(request, response);
+		String actionName = request.getParameter("a");
+
+		
+		ActionFactory af = new MainActionFactory();
+		Action action = af.getAction(actionName);
+		action.execute(request, response);
 		
 	}
 

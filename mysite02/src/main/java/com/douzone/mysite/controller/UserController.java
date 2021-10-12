@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.douzone.mysite.web.utill.MvcUtil;
+import com.douzone.mysite.mvc.user.UserActionFactory;
+import com.douzone.web.mvc.Action;
+import com.douzone.web.mvc.ActionFactory;
 
 
 public class UserController extends HttpServlet {
@@ -18,15 +20,12 @@ public class UserController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		System.out.println("User Controller Called");
 		
-		String action = request.getParameter("a");
-		if("joinform".equals(action)) {
-			MvcUtil.forward("/WEB-INF/views/user/joinform.jsp",request,response);
-			
-		}  else {
-			MvcUtil.redirect("/mysite02", request, response);
-		}
+		String actionName = request.getParameter("a");
+
 		
-		
+		ActionFactory af = new UserActionFactory();
+		Action action = af.getAction(actionName);
+		action.execute(request, response);
 	}
 
 	
