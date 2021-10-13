@@ -172,4 +172,9 @@ public class UserDao {
 		return conn;
 	}
 
+	public UserVo findByNo(Long no) {
+		
+		return null;
+	}
+
 }
