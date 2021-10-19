@@ -8,12 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.douzone.mysite.vo.GuestBookVo;
+import org.springframework.stereotype.Repository;
+
+import com.douzone.mysite.vo.GuestbookVo;
 
 
-
-public class GuestBookDao {
-	public boolean insert(GuestBookVo vo) {
+@Repository
+public class GuestbookRepository {
+	public boolean insert(GuestbookVo vo) {
 		boolean result = false;
 		
 		Connection conn = null;
@@ -24,14 +26,14 @@ public class GuestBookDao {
 			
 			//3. SQL 준비
 			String sql = 
-					"insert into guestbook values(null, ?, ?, ?, ?)";
+					"insert into guestbook values(null, ?, ?, ?, now())";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. 바인딩(binding)
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getPassword());
 			pstmt.setString(3, vo.getMessage());
-			pstmt.setString(4, vo.getRegDate());
+			
 			
 			//5. SQL 실행
 			int count = pstmt.executeUpdate();
@@ -56,8 +58,8 @@ public class GuestBookDao {
 		return result;		
 	}
 	
-	public List<GuestBookVo> findAll() {
-		List<GuestBookVo> result = new ArrayList<>();
+	public List<GuestbookVo> findAll() {
+		List<GuestbookVo> result = new ArrayList<>();
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -85,7 +87,7 @@ public class GuestBookDao {
 				String regDate = rs.getString(4);
 				String message = rs.getString(5);
 				
-				GuestBookVo vo = new GuestBookVo();
+				GuestbookVo vo = new GuestbookVo();
 				vo.setNo(no);
 				vo.setName(name);
 				vo.setPassword(password);
@@ -117,7 +119,7 @@ public class GuestBookDao {
 		return result;
 	}
 	
-	public boolean delete(GuestBookVo vo) {
+	public boolean delete(GuestbookVo vo) {
 		boolean result = false;
 		
 		Connection conn = null;
