@@ -1,0 +1,302 @@
+package com.douzone.mysite.repository;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.stereotype.Repository;
+
+import com.douzone.mysite.exception.UserRepositoryException;
+import com.douzone.mysite.vo.UserVo;
+
+@Repository
+public class UserRepository {
+	public boolean insert(UserVo vo) {
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = 
+					"insert into user values(null, ?, ?, ?, ?, now())";
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getEmail());
+			pstmt.setString(3, vo.getPassword());
+			pstmt.setString(4, vo.getGender());
+			
+			//5. SQL 실행
+			int count = pstmt.executeUpdate();
+			
+			result = count == 1;
+		} catch (SQLException e) {
+			System.out.println("insert error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("finally error:" + e);
+			}
+		}
+		
+		return result;		
+	}
+	
+	public UserVo findByEmailAndPassword(String email, String password) throws UserRepositoryException {
+		UserVo vo = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = 
+				"select no, name "
+				+ " from user "
+				+ " where email=? "
+				+ " and password=?";
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			
+			
+			//5. SQL 실행
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				Long no = rs.getLong(1);
+				String name = rs.getString(2);
+				
+				vo = new UserVo();
+				vo.setNo(no);
+				vo.setName(name);
+			
+				
+				
+			}
+
+		} catch (SQLException e) {
+			System.out.println("findAll error:" + e);
+			throw new UserRepositoryException(e.toString());
+		} finally {
+			// clean up
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return vo;
+	}
+	
+	public boolean delete(UserVo vo) {
+		boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = 
+				"delete"
+				+ "   from guestbook"
+				+ "  where no = ?"
+				+ "    and password = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			pstmt.setLong(1, vo.getNo());
+			pstmt.setString(2, vo.getPassword());
+			
+			//5. SQL 실행
+			int count = pstmt.executeUpdate();
+			
+			result = count == 1;
+		} catch (SQLException e) {
+			System.out.println("delete error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("finally error:" + e);
+			}
+		}
+		
+		return result;		
+	}
+	
+	private Connection getConnection() throws SQLException {
+		Connection conn = null;
+		try {
+			// 1. JDBC Driver 로딩
+			Class.forName("org.mariadb.jdbc.Driver");
+
+			// 2. 연결하기
+			String url = "jdbc:mysql://127.0.0.1:3306/webdb?charset=utf8";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+		} catch (ClassNotFoundException e) {
+			System.out.println("드라이버 로딩 실패:" + e);
+		}
+
+		return conn;
+	}
+
+	public UserVo findByNo(Long no) throws UserRepositoryException {
+		UserVo vo = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = 
+				"select name, email, password, gender"
+				+ " from user"
+				+ " where no = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			pstmt.setLong(1, no);
+			
+			
+			
+			//5. SQL 실행
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String name = rs.getString(1);
+				String email = rs.getString(2);
+				String password = rs.getString(3);
+				String gender = rs.getString(4);
+				
+				vo = new UserVo();
+				vo.setName(name);
+				vo.setEmail(email);
+				vo.setPassword(password);
+				vo.setGender(gender);
+				
+				
+			}
+
+		} catch (SQLException e) {
+			System.out.println("findByNo error:" + e);
+			throw new UserRepositoryException(e.toString());
+		} finally {
+			// clean up
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return vo;
+	}
+
+	public boolean update(UserVo vo) {
+        boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			if ("".equals(vo.getPassword())) {
+				String sql = "  update user" 
+			                  + " set name = ?, email = ?, gender=?" 
+						      + " where no = ?";
+				pstmt = conn.prepareStatement(sql);
+
+				// 4. 바인딩(binding)
+				pstmt.setString(1, vo.getName());
+				pstmt.setString(2, vo.getEmail());
+				pstmt.setString(3, vo.getGender());
+				pstmt.setLong(4, vo.getNo());
+
+			} else {
+
+				String sql = "  update user" 
+				           + " set name = ?, email = ?, password = ?, gender=?" 
+						   + " where no = ?";
+				pstmt = conn.prepareStatement(sql);
+
+				// 4. 바인딩(binding)
+				pstmt.setString(1, vo.getName());
+				pstmt.setString(2, vo.getEmail());
+				pstmt.setString(3, vo.getPassword());
+				pstmt.setString(4, vo.getGender());
+				pstmt.setLong(5, vo.getNo());
+
+			}
+			//5. SQL 실행
+			int count = pstmt.executeUpdate();
+			
+			result = count == 1;
+		} catch (SQLException e) {
+			System.out.println("update error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;		
+	}
+	
+
+}
