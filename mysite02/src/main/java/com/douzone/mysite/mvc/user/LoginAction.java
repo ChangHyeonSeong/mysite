@@ -25,7 +25,7 @@ public class LoginAction implements Action {
          if(userVo == null) {
         	 /* 로그인 실패*/
         	 request.setAttribute("result", "fail");
-//        	 Enumeration<String> e= request.getAttributeNames();
+//        	 Enumeration<String> e= request.getAttributeNames();  //속성이름확인가능
 //        	 while(e.hasMoreElements()) {
 //        		 System.out.println(e.nextElement());
 //        	 }
@@ -35,8 +35,9 @@ public class LoginAction implements Action {
          
          /* 인증처리(세션처리) */
          System.out.println("인증처리(세션처리)");
-         HttpSession session =  request.getSession(true);    //true면 세선 가져온다
-         
+         HttpSession session =  request.getSession(true);    
+         System.out.println(session.isNew());
+           
          session.setAttribute("authUser", userVo);
          
          

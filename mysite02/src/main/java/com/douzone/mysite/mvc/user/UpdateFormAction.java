@@ -16,6 +16,7 @@ public class UpdateFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		// Access Controll(보안, 인증체크)
 		HttpSession session = request.getSession();
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -26,6 +27,7 @@ public class UpdateFormAction implements Action {
 		////////////////////////////////////////////////////////
 		Long no = authUser.getNo();
 		UserVo vo = new UserDao().findByNo(no);
+		
 		request.setAttribute("userVo", vo);
 		MvcUtil.forward("user/updateform", request, response);
 

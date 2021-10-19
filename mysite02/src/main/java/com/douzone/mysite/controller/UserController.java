@@ -17,7 +17,7 @@ public class UserController extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
+		
 		System.out.println("User Controller Called");
 		
 		String actionName = request.getParameter("a");

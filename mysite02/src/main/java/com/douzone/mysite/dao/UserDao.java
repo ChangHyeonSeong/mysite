@@ -173,8 +173,125 @@ public class UserDao {
 	}
 
 	public UserVo findByNo(Long no) {
+		UserVo vo = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
-		return null;
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			String sql = 
+				"select name, email, password, gender"
+				+ " from user"
+				+ " where no = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			//4. 바인딩(binding)
+			pstmt.setLong(1, no);
+			
+			
+			
+			//5. SQL 실행
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String name = rs.getString(1);
+				String email = rs.getString(2);
+				String password = rs.getString(3);
+				String gender = rs.getString(4);
+				
+				vo = new UserVo();
+				vo.setName(name);
+				vo.setEmail(email);
+				vo.setPassword(password);
+				vo.setGender(gender);
+				
+				
+			}
+
+		} catch (SQLException e) {
+			System.out.println("findAll error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return vo;
 	}
+
+	public boolean update(UserVo vo) {
+        boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			
+			//3. SQL 준비
+			if ("".equals(vo.getPassword())) {
+				String sql = "  update user" 
+			                  + " set name = ?, email = ?, gender=?" 
+						      + " where no = ?";
+				pstmt = conn.prepareStatement(sql);
+
+				// 4. 바인딩(binding)
+				pstmt.setString(1, vo.getName());
+				pstmt.setString(2, vo.getEmail());
+				pstmt.setString(3, vo.getGender());
+				pstmt.setLong(4, vo.getNo());
+
+			} else {
+
+				String sql = "  update user" 
+				           + " set name = ?, email = ?, password = ?, gender=?" 
+						   + " where no = ?";
+				pstmt = conn.prepareStatement(sql);
+
+				// 4. 바인딩(binding)
+				pstmt.setString(1, vo.getName());
+				pstmt.setString(2, vo.getEmail());
+				pstmt.setString(3, vo.getPassword());
+				pstmt.setString(4, vo.getGender());
+				pstmt.setLong(5, vo.getNo());
+
+			}
+			//5. SQL 실행
+			int count = pstmt.executeUpdate();
+			
+			result = count == 1;
+		} catch (SQLException e) {
+			System.out.println("update error:" + e);
+		} finally {
+			// clean up
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;		
+	}
+	
 
 }
