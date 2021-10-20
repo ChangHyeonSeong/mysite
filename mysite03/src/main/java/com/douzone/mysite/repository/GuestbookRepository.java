@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.douzone.mysite.exception.GuestbookRepositoryException;
 import com.douzone.mysite.vo.GuestbookVo;
 
 
@@ -58,7 +59,7 @@ public class GuestbookRepository {
 		return result;		
 	}
 	
-	public List<GuestbookVo> findAll() {
+	public List<GuestbookVo> findAll() throws GuestbookRepositoryException{
 		List<GuestbookVo> result = new ArrayList<>();
 		
 		Connection conn = null;
@@ -70,7 +71,7 @@ public class GuestbookRepository {
 			
 			//3. SQL 준비
 			String sql = 
-				"   select no, name,password, date_format(reg_date, '%Y/%m/%d %H:%i:%s'), message"
+				"   elect no, name,password, date_format(reg_date, '%Y/%m/%d %H:%i:%s'), message"
 				+ " from guestbook"
 				+ " order by reg_date desc";
 			pstmt = conn.prepareStatement(sql);
@@ -99,6 +100,7 @@ public class GuestbookRepository {
 
 		} catch (SQLException e) {
 			System.out.println("findAll error:" + e);
+			throw new GuestbookRepositoryException(e.toString());
 		} finally {
 			// clean up
 			try {

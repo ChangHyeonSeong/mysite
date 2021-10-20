@@ -41,7 +41,7 @@
 								<td>[${ count-status.index}]</td>
 								<td>${vo.name }</td>
 								<td>${vo.regDate }</td>
-								<td><a href="${pageContext.request.contextPath }/guestbook/delete?no=${vo.no}">삭제</a></td>
+								<td><a href="${pageContext.request.contextPath }/guestbook/delete/${vo.no}">삭제</a></td>
 							</tr>
 							<tr>
 								<td colspan=4>
