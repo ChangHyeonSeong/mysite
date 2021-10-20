@@ -13,11 +13,11 @@ public class GuestbookService {
 	@Autowired
     private GuestbookRepository guestbookRepository;
 
-	public List<GuestbookVo> GetList() {
+	public List<GuestbookVo> getList() {
 		List<GuestbookVo> list = guestbookRepository.findAll();
-		for(GuestbookVo vo : list) {
-			System.out.println(vo);
-		}
+//		for(GuestbookVo vo : list) {
+//			System.out.println(vo);
+//		}
 		return list;
 	}
 

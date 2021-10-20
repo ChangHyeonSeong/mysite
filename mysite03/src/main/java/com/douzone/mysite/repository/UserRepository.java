@@ -87,10 +87,7 @@ public class UserRepository {
 				
 				vo = new UserVo();
 				vo.setNo(no);
-				vo.setName(name);
-			
-				
-				
+				vo.setName(name);	
 			}
 
 		} catch (SQLException e) {

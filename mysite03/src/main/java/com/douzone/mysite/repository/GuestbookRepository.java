@@ -61,8 +61,8 @@ public class GuestbookRepository {
 	}
 	
 	public List<GuestbookVo> findAll() throws GuestbookRepositoryException{
-		StopWatch sw = new StopWatch();
-		sw.start();
+//		StopWatch sw = new StopWatch();
+//		sw.start();
 		List<GuestbookVo> result = new ArrayList<>();
 		
 		Connection conn = null;
@@ -120,9 +120,9 @@ public class GuestbookRepository {
 				e.printStackTrace();
 			}
 		}
-		sw.stop();
-		Long totalTime = sw.getTotalTimeMillis();
-		System.out.println("[Execution Time][GuestbookRepository.findAll] " + totalTime +" millis");
+//		sw.stop();
+//		Long totalTime = sw.getTotalTimeMillis();
+//		System.out.println("[Execution Time][GuestbookRepository.findAll] " + totalTime +" millis");
 		return result;
 	}
 	

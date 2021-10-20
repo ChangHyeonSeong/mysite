@@ -22,7 +22,7 @@ public class GuestbookController {
 	
 	@RequestMapping("")
 	public String index(Model model) {
-		List<GuestbookVo> list = guestbookService.GetList();
+		List<GuestbookVo> list = guestbookService.getList();
 		
 		model.addAttribute("list",list);
 		return "guestbook/list";
