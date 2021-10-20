@@ -3,6 +3,7 @@ package com.douzone.mysite.mvc.board;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,6 +29,9 @@ public class ViewAction implements Action {
 		boolean isNumeric = true;
 		Long no = null;
 		int  pageNo = 1;
+		int vistit = 0;
+		String COOKIE_NAME = null;
+		
 		
 		String noStr = request.getParameter("n");
 		System.out.println("-----------------------  넘어온 뷰넘버 : " + noStr + "        ----------------------------");
@@ -44,15 +48,41 @@ public class ViewAction implements Action {
 			no = Long.valueOf(noStr);
 		}
 		System.out.println("-----------------------  넘버링된 뷰넘버 : " + noStr + "        ----------------------------");
-				
+	    
 		/**NO 레코드 데이터 가져오기**/
 		BoardDao dao = new BoardDao();
 		BoardVo vo = dao.findNo(no);
 		request.setAttribute("vo", vo);
 		
 		
+		COOKIE_NAME = "visit" + no;
+		
+		// 쿠키 읽기
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null && cookies.length > 0) {
+			for (Cookie cookie : cookies) {
+				if (COOKIE_NAME.equals(cookie.getName())) {
+					vistit = Integer.parseInt(cookie.getValue());
+				}
+			}
+		}
+		
 		/**NO 레코드 hit 조회수 증가**/
-		dao.updateHit(no);
+		// 쿠키 쓰기
+		if (vistit == 0) {
+			vistit = 1;
+
+			Cookie cookie = new Cookie(COOKIE_NAME, String.valueOf(vistit));
+			cookie.setPath(request.getContextPath());
+			cookie.setMaxAge(60); // 60s
+			response.addCookie(cookie);
+			
+			dao.updateHit(no);
+		}
+		// 화면 출력
+		System.out.println(
+				"-----------------------  게시판레코드번호 : " + vistit + "        ----------------------------");
+		
 		
 		/**페이지번호 넘버링체크 및 셋팅**/
 		String pageNoStr = request.getParameter("p");

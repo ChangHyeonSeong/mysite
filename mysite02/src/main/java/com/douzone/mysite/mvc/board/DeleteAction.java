@@ -29,6 +29,11 @@ public class DeleteAction implements Action {
 		String pageNo = request.getParameter("p");
 		
 		
+		 if(!(no.length() > 0) || no == null ) {
+			 MvcUtil.redirect(request.getContextPath() + "/board", request, response);
+			 return;
+		 }
+		
 		/**로그인 유저와 글쓴이가 같은 유저인지 확인**/
 		BoardDao dao = new BoardDao();
 		BoardVo vo = dao.findNo(Long.valueOf(no));
@@ -38,16 +43,13 @@ public class DeleteAction implements Action {
 			return;
 		}
 		
-	
 		vo.setNo(Long.valueOf(no));
-		vo.setTitle("삭제된메세지입니다");
-		vo.setContents("삭제된메세지입니다");
-		System.out.println(vo);
+		
+		
 		dao.delete(vo);
 		
-		request.setAttribute("pageNo", pageNo);
 		
-		MvcUtil.redirect(request.getContextPath() + "/board", request, response);
+		MvcUtil.redirect(request.getContextPath() + "/board?p=" +pageNo, request, response);
 
 	}
 

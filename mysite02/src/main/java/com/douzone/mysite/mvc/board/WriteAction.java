@@ -29,7 +29,13 @@ public class WriteAction implements Action {
 		Long no = null;
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
+		String pageNo = request.getParameter("p"); 
 		
+		/**제목 공백이면 리다이렉트**/
+		if(title.length() == 0 || "".equals(pageNo) ) {
+			MvcUtil.redirect(request.getContextPath() + "/board?a=writeform&p=" + pageNo, request, response);
+			return;
+		}
 		
 		
 		/**페이지번호 넘버링체크 및 셋팅**/
@@ -78,6 +84,8 @@ public class WriteAction implements Action {
 
 			dao.insertReply(upvo);
 			
+			MvcUtil.redirect(request.getContextPath() + "/board?p=" + pageNo, request, response);
+			return;
 		}
 		
 		MvcUtil.redirect(request.getContextPath() + "/board", request, response);

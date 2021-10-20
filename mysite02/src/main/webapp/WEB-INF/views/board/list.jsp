@@ -37,26 +37,12 @@
 								<c:when test='${vo.orderNo > 0 }'>
 									<td style="text-align: left; padding-left: ${20 * (vo.depth) + 20 }px">
 									<img src='${pageContext.servletContext.contextPath }/assets/images/reply.png' />
-									<c:choose>
-											<c:when test='${vo.title == "삭제된메세지입니다" && vo.contents == "삭제된메세지입니다" }'>
-												<a	>${vo.title }</a>
-											</c:when>
-											<c:otherwise>
-											    <a	href="${pageContext.servletContext.contextPath }/board?a=view&p=${pageNo }&n=${vo.no }">${vo.title }</a>
-											</c:otherwise>
-									</c:choose>
+										<a	href="${pageContext.servletContext.contextPath }/board?a=view&p=${pageNo }&n=${vo.no }">${vo.title }</a>
 									</td>
 								</c:when>
 								<c:otherwise>
 									<td style="text-align: left; padding-left: 20px">
-									<c:choose>
-											<c:when test='${vo.title == "삭제된메세지입니다" && vo.contents == "삭제된메세지입니다" }'>
-												<a	>${vo.title }</a>
-											</c:when>
-											<c:otherwise>
-											    <a	href="${pageContext.servletContext.contextPath }/board?a=view&p=${pageNo }&n=${vo.no }">${vo.title }</a>
-											</c:otherwise>
-									</c:choose>
+										<a	href="${pageContext.servletContext.contextPath }/board?a=view&p=${pageNo }&n=${vo.no }">${vo.title }</a>
 									</td>
 								</c:otherwise>
 							</c:choose>
@@ -65,11 +51,11 @@
 							<td>${vo.regDate }</td>
 							<td>
 							<c:choose>
-								<c:when test='${vo.title == "삭제된메세지입니다" && vo.contents == "삭제된메세지입니다" }'>
-									<a	>삭제</a>
+								<c:when test='${authUser.no == vo.userNo }'>
+								    <a href="${pageContext.servletContext.contextPath }/board?a=delete&p=${pageNo }&n=${vo.no }" >삭제</a>
 								</c:when>
 								<c:otherwise>
-									<a href="${pageContext.servletContext.contextPath }/board?a=delete&p=${pageNo }&n=${vo.no }" >삭제</a>
+									<a>-</a>
 								</c:otherwise>
 							</c:choose>
 							</td>

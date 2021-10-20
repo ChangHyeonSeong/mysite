@@ -323,15 +323,11 @@ public class BoardDao {
 
 			// 3. SQL 준비
 			String sql = 
-					"   update board "
-					+ " set title = ?, contents=? "
-					+ " where no=?";
+					"  delete from board where no = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩(binding)
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContents());
-			pstmt.setLong(3, vo.getNo());
+			pstmt.setLong(1, vo.getNo());
 
 			// 5. SQL 실행
 			int count = pstmt.executeUpdate();

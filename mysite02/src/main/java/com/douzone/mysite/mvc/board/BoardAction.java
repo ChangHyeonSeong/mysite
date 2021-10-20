@@ -6,9 +6,11 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.douzone.mysite.dao.BoardDao;
 import com.douzone.mysite.vo.BoardVo;
+import com.douzone.mysite.vo.UserVo;
 import com.douzone.web.mvc.Action;
 import com.douzone.web.utill.MvcUtil;
 
@@ -16,7 +18,15 @@ public class BoardAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int row = 5;
+		// Access Controll(보안, 인증체크)
+		HttpSession session = request.getSession();
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+//		if (authUser == null) {
+//			MvcUtil.redirect(request.getContextPath() + "/user?a=loginform", request, response);
+//			return;
+//		}
+		////////////////////////////////////////////////////////
+		int row = 10;
 		int pageNo = 1;
 		int pageCount = 0;
 		boolean isNumeric = true;
@@ -81,7 +91,8 @@ public class BoardAction implements Action {
 		System.out.println("-----------------------   시작행 : " + begin + "         ----------------------------");
 		List<BoardVo> limitList = dao.findAll(begin, (long)row);
 		request.setAttribute("limitList", limitList);
-
+		
+		request.setAttribute("authUser", authUser);
 		request.setAttribute("pageNo", pageNo);
 		request.setAttribute("row", row);
 		

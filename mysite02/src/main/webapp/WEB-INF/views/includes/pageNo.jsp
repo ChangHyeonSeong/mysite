@@ -10,7 +10,7 @@
 		<!-- ◀ -->
 		<c:choose>
 			<c:when test='${pageNo <= pRange }'>
-				<li><a href="">◀</a></li>
+				<li>◀</li>
 			</c:when>
 			<c:otherwise>
 				<c:choose>
@@ -69,7 +69,7 @@
 			<c:when test='${pageNo % pRange == 0 }'>
 				<c:choose>
 					<c:when test='${pageNo  >= pageCount  }'>
-						<li><a href="">▶</a></li>
+						<li>▶</li>
 					</c:when>
 					<c:otherwise>
 						<li><a
@@ -80,7 +80,7 @@
 			<c:otherwise>
 				<c:choose>
 					<c:when test='${pageNo >= (pageCount -( pageCount % pRange) +1) }'>
-						<li><a href="">▶</a></li>
+						<li>▶</li>
 					</c:when>
 					<c:otherwise>
 						<li><a

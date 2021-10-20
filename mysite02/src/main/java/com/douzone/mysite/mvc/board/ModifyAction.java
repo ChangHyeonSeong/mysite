@@ -32,7 +32,7 @@ public class ModifyAction implements Action {
 		String content = request.getParameter("content");
 		String pageNo = request.getParameter("p");
 		
-		/**페이지번호 string to Long**/
+		/**페이지번호 넘버링체크 string to Long**/
         for (int i = 0; i < noStr.length(); i++) {
             if (!Character.isDigit(noStr.charAt(i))) {
                 isNumeric = false;
