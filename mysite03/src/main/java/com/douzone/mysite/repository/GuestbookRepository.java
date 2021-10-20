@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 import com.douzone.mysite.exception.GuestbookRepositoryException;
 import com.douzone.mysite.vo.GuestbookVo;
@@ -60,6 +61,8 @@ public class GuestbookRepository {
 	}
 	
 	public List<GuestbookVo> findAll() throws GuestbookRepositoryException{
+		StopWatch sw = new StopWatch();
+		sw.start();
 		List<GuestbookVo> result = new ArrayList<>();
 		
 		Connection conn = null;
@@ -71,7 +74,7 @@ public class GuestbookRepository {
 			
 			//3. SQL 준비
 			String sql = 
-				"   elect no, name,password, date_format(reg_date, '%Y/%m/%d %H:%i:%s'), message"
+				"   select no, name,password, date_format(reg_date, '%Y/%m/%d %H:%i:%s'), message"
 				+ " from guestbook"
 				+ " order by reg_date desc";
 			pstmt = conn.prepareStatement(sql);
@@ -117,7 +120,9 @@ public class GuestbookRepository {
 				e.printStackTrace();
 			}
 		}
-		
+		sw.stop();
+		Long totalTime = sw.getTotalTimeMillis();
+		System.out.println("[Execution Time][GuestbookRepository.findAll] " + totalTime +" millis");
 		return result;
 	}
 	
@@ -132,7 +137,7 @@ public class GuestbookRepository {
 			
 			//3. SQL 준비
 			String sql = 
-				"delete"
+				"    delete "
 				+ "   from guestbook"
 				+ "  where no = ?"
 				+ "    and password = ?";
