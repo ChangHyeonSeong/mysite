@@ -35,10 +35,10 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<a class="l" href="${pageContext.servletContext.contextPath }/board?a=writeform&p=${pageNo }&n=${vo.no }">답글달기</a>
-					<a href="${pageContext.servletContext.contextPath }/board?p=${pageNo }">글목록</a>
+					<a class="l" href="${pageContext.servletContext.contextPath }/board/write?n=${vo.no }&p=${pageNo }">답글달기</a>
+					<a href="${pageContext.servletContext.contextPath }/board/${pageNo }">글목록</a>
 					<c:if test='${authCheck == true}'>
-						<a href="${pageContext.servletContext.contextPath }/board?a=modifyform&p=${pageNo }&n=${vo.no }">글수정</a>
+						<a href="${pageContext.servletContext.contextPath }/board/modify/${vo.no }?p=${pageNo }">글수정</a>
 					</c:if>
 
 				</div>

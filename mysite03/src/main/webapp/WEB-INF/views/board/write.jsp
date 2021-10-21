@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -14,7 +14,7 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath }/board?a=write&n=${no}">
+				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath }/board/write?n=${no }&p=${pageNo }">
 					<input type = "hidden" name = "a" value="insert">
 					<table class="tbl-ex">
 						<tr>
@@ -27,12 +27,12 @@
 						<tr>
 							<td class="label">내용</td>
 							<td>
-								<textarea id="content" name="content"></textarea>
+								<textarea id="content" name="contents"></textarea>
 							</td>
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.servletContext.contextPath }/board?p=${pageNo }">취소</a>
+						<a href="${pageContext.servletContext.contextPath }/board/${pageNo }">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>				
