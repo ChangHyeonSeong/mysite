@@ -36,12 +36,12 @@
 								<c:when test='${vo.orderNo > 0 }'>
 									<td style="text-align: left; padding-left: ${20 * (vo.depth) + 20 }px">
 									<img src='${pageContext.servletContext.contextPath }/assets/images/reply.png' />
-										<a	href="${pageContext.servletContext.contextPath }/board/view/${vo.no }?p=${pageNo }">${vo.title }</a>
+										<a	href="${pageContext.servletContext.contextPath }/board/view?n=${vo.no }&p=${pageNo }">${vo.title }</a>
 									</td>
 								</c:when>
 								<c:otherwise>
 									<td style="text-align: left; padding-left: 20px">
-										<a	href="${pageContext.servletContext.contextPath }/board/view/${vo.no }?p=${pageNo }">${vo.title }</a>
+										<a	href="${pageContext.servletContext.contextPath }/board/view?n=${vo.no }&p=${pageNo }">${vo.title }</a>
 									</td>
 								</c:otherwise>
 							</c:choose>
@@ -51,7 +51,7 @@
 							<td>
 							<c:choose>
 								<c:when test='${authUser.no == vo.userNo }'>
-								    <a href="${pageContext.servletContext.contextPath }/board/delete/${vo.no }?p=${pageNo }" >삭제</a>
+								    <a href="${pageContext.servletContext.contextPath }/board/delete?n=${vo.no }&p=${pageNo }" >삭제</a>
 								</c:when>
 								<c:otherwise>
 									<a>-</a>

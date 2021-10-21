@@ -9,11 +9,11 @@
 	</parent>
 	<artifactId>mysite03</artifactId>
 	<packaging>war</packaging>
-	
+
 	<properties>
 		<org.springframework-version>4.3.4.RELEASE</org.springframework-version>
 		<jcloverslf4j.version>1.7.6</jcloverslf4j.version>
-		<logback.version>1.1.1</logback.version>		
+		<logback.version>1.1.1</logback.version>
 	</properties>
 
 	<dependencies>
@@ -28,7 +28,7 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
-			</exclusions>			
+			</exclusions>
 		</dependency>
 
 		<!-- Spring MVC -->
@@ -37,34 +37,61 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- Spring Web -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
-		<!--  Spring Aspect -->
+
+		<!-- Spring Aspect -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-				
+
+		<!-- spring jdbc --><!-- MyBatis -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
 		<!-- jstl -->
 		<dependency>
-		    <groupId>jstl</groupId>
-		    <artifactId>jstl</artifactId>
-		    <version>1.2</version>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
-		
-		<!-- MariaDB JDBC Driver -->		
+
+		<!-- MariaDB JDBC Driver -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<version>2.7.2</version>
 		</dependency>
+
+		<!-- Common DBCP -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
+		<!-- MyBatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		
 
 		<!-- logback(slf4j) -->
 		<dependency>
@@ -77,7 +104,7 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
 		</dependency>
-								
+
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -117,5 +144,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>	
+	</build>
 </project>

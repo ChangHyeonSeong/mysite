@@ -38,7 +38,7 @@
 					<a class="l" href="${pageContext.servletContext.contextPath }/board/write?n=${vo.no }&p=${pageNo }">답글달기</a>
 					<a href="${pageContext.servletContext.contextPath }/board/${pageNo }">글목록</a>
 					<c:if test='${authCheck == true}'>
-						<a href="${pageContext.servletContext.contextPath }/board/modify/${vo.no }?p=${pageNo }">글수정</a>
+						<a href="${pageContext.servletContext.contextPath }/board/modify?n=${vo.no }&p=${pageNo }">글수정</a>
 					</c:if>
 
 				</div>
