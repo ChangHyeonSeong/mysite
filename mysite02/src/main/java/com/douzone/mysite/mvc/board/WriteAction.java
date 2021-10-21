@@ -31,12 +31,6 @@ public class WriteAction implements Action {
 		String content = request.getParameter("content");
 		String pageNo = request.getParameter("p"); 
 		
-		/**제목 공백이면 리다이렉트**/
-		if(title.length() == 0 || "".equals(pageNo) ) {
-			MvcUtil.redirect(request.getContextPath() + "/board?a=writeform&p=" + pageNo, request, response);
-			return;
-		}
-		
 		
 		/**페이지번호 넘버링체크 및 셋팅**/
 		String noStr = request.getParameter("n");
@@ -54,6 +48,11 @@ public class WriteAction implements Action {
 		}
 		/**넘어온 no가 없으면 글쓰기 있으면 답글달기 실행**/
 		if (no == null ) {
+			/**제목 공백이면 리다이렉트**/
+			if(title.length() == 0 || "".equals(pageNo) ) {
+				MvcUtil.redirect(request.getContextPath() + "/board?a=writeform&p=" + pageNo, request, response);
+				return;
+			}
 			BoardVo vo = new BoardVo();
 			vo.setTitle(title);
 			vo.setContents(content);
@@ -62,17 +61,22 @@ public class WriteAction implements Action {
 			new BoardDao().insert(vo);
 			
 		} else {
+			/**제목 공백이면 리다이렉트**/
+			if(title.length() == 0 || "".equals(pageNo) ) {
+				MvcUtil.redirect(request.getContextPath() + "/board?a=writeform&n="+ no+"&p=" + pageNo, request, response);
+				return;
+			}
 			BoardVo vo = new BoardVo();
 			BoardDao dao = new BoardDao();
 			
 			vo = dao.findNo(no);
-			
+			dao.update(vo);
 			
 			BoardVo upvo = new BoardVo();
 			upvo.setOrderNo(vo.getOrderNo() + 1);
 			upvo.setDepth(vo.getDepth() + 1);
 			
-			dao.update(vo);
+			
 			
 			upvo.setTitle(title);
 			upvo.setContents(content);
