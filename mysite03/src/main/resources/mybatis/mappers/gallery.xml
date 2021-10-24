@@ -7,15 +7,15 @@
 		]]>
 	</insert>
 
-	<delete id="delete" parameterType="galleryvo">
+	<delete id="delete" parameterType="long">
 		<![CDATA[
-		
+		delete from gallery where no = #{no }
 		]]>
 	</delete>
 	
 	<select id="findAll" resultType="galleryvo">
 		<![CDATA[
-		select url, comments from gallery
+		select no, url, comments from gallery
 		]]>
 	</select>
 

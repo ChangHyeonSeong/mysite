@@ -20,5 +20,8 @@ public class GalleryRepository {
 	public List<GalleryVo> findAll() {
 		return sqlSession.selectList("gallery.findAll");
 	}
+	public boolean delete(Long no) {
+		return 1 == sqlSession.delete("gallery.delete", no);
+	}
 
 }

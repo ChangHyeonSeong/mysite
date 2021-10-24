@@ -19,7 +19,7 @@ public class GalleryService {
 	@Autowired
 	private GalleryRepository galleryRepository;
 	private static String SAVE_PATH = "/mysite-upload-images";
-	private static String URL_BASE = "/images";
+	private static String URL_BASE = "/gallery/images";
 	
     public String upload(MultipartFile multipartFile,String comments) {
     	String url = null;
@@ -58,7 +58,7 @@ public class GalleryService {
 		
 		/**db에 저장 **/
         GalleryVo vo = new GalleryVo();
-        vo.setUrl("/gallery"+URL_BASE + "/" + saveFilename);
+        vo.setUrl(URL_BASE + "/" + saveFilename);
         vo.setComments(comments);
 		galleryRepository.insert(vo);
 			
@@ -85,5 +85,9 @@ public class GalleryService {
 
 	public List<GalleryVo> findAllUrl() {
 		return galleryRepository.findAll();
+	}
+
+	public boolean deleteUrl(Long no) {
+		return galleryRepository.delete(no);
 	}
 }
