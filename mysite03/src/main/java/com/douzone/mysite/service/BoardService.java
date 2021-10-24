@@ -24,7 +24,6 @@ public class BoardService {
 	/**현재페이지번호에 해당되는 데이터 row개 가져오기**/
 	public List<BoardVo> findLimitList( long row, Long pageNo) {
 		long begin = 0;
-		
 		begin = (pageNo - 1) * row;
 		List<BoardVo> list = boardRepository.findAll(begin, row);
 		return list;
@@ -63,24 +62,18 @@ public class BoardService {
 		return authCheck;
 	}
 
-	public void newWrite(BoardVo vo) {
-	
-		boardRepository.insert(vo);
-		
+	public boolean newWrite(BoardVo vo) {
+		return boardRepository.insert(vo);
 	}
 
-	public void replyWrite(Long no, BoardVo vo) {
+	public boolean replyWrite(Long no, BoardVo vo) {
 		
 		BoardVo fvo = new BoardVo();
 		fvo = boardRepository.findNo(no);
 		
-		
-		BoardVo upvo = new BoardVo();
-		upvo.setOrderNo(fvo.getOrderNo() + 1);
-		upvo.setDepth(fvo.getDepth() + 1);
-        
 		boardRepository.update(fvo);
 		
+		BoardVo upvo = new BoardVo();
 		upvo.setTitle(vo.getTitle());
 		upvo.setContents(vo.getContents());
         upvo.setUserNo(vo.getUserNo());
@@ -89,11 +82,21 @@ public class BoardService {
 	    upvo.setDepth(fvo.getDepth() + 1);
 	    
 		System.out.println("--------------------------------                  "+upvo);
-		boardRepository.insertReply(upvo);
+		return boardRepository.insertReply(upvo);
 		
 	}
 
+	public BoardVo findNo(Long no) {
+		return boardRepository.findNo(no);
+	}
+
+	public boolean updateTitleAndContent(BoardVo vo, Long no) {
+		return boardRepository.updateTitleAndContent(vo.getTitle(), vo.getContents(), no);
+	}
+
 	
-	
+	public boolean delete(BoardVo fvo) {
+		return boardRepository.delete(fvo);
+	}
 	
 }

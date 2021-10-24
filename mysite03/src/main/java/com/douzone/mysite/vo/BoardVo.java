@@ -1,5 +1,6 @@
 package com.douzone.mysite.vo;
 
+
 public class BoardVo {
      private Long no;
      private String title;
@@ -11,6 +12,7 @@ public class BoardVo {
      private Long depth;
      private Long userNo;
      private String name;
+    // private List<CommentVo> comments;
      
      
      

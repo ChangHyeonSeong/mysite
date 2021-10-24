@@ -51,7 +51,9 @@
 							<td>
 							<c:choose>
 								<c:when test='${authUser.no == vo.userNo }'>
-								    <a href="${pageContext.servletContext.contextPath }/board/delete?n=${vo.no }&p=${pageNo }" >삭제</a>
+								    <a href="${pageContext.servletContext.contextPath }/board/delete?n=${vo.no }&p=${pageNo }" >
+								      <img src='${pageContext.servletContext.contextPath }/assets/images/recycle.png' />
+								    </a>
 								</c:when>
 								<c:otherwise>
 									<a>-</a>

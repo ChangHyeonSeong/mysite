@@ -1,8 +1,6 @@
 package com.douzone.mysite.controller;
 
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.douzone.mysite.security.Auth;
+import com.douzone.mysite.security.AuthUser;
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
-
-
-
-
 
 @Controller
 @RequestMapping("/board")
@@ -25,12 +21,12 @@ public class BoardController {
 	private BoardService boardService;
 
 	@RequestMapping(value = { "", "/{pageNo}" }, method = RequestMethod.GET)
-	public String index(HttpSession session, Model model,
+	public String index(
+			@AuthUser UserVo authUser, Model model,
 			@PathVariable(value = "pageNo", required = false) Long pageNo) {
 
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		/** 가져올 레코드 수 **/
-		int row = 10;
+		int row = 5;
 
 		/** 넘어온 페이지번호가 널이면 1셋팅 **/
 		if (pageNo == null) {
@@ -66,17 +62,12 @@ public class BoardController {
 		return "board/list";
 	}
 
+	@Auth
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
-	public String view(HttpSession session, Model model, 
+	public String view(
+			@AuthUser UserVo authUser, Model model, 
 			@RequestParam(value = "n", required = false) Long no,
 			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo) {
-
-		// Access Controll(보안, 인증체크)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "user/login";
-		}
-		////////////////////////////////////////////////////////
 
 		/** NO 레코드 데이터 가져오기 **/
 		BoardVo vo = boardService.getByno(no);
@@ -94,38 +85,27 @@ public class BoardController {
 		return "board/view";
 	}
 
+	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public String write(HttpSession session, Model model, 
+	public String write(Model model, 
 			@RequestParam(value = "n", required = false) Long no,
 			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo) {
-
-		// Access Controll(보안, 인증체크)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "user/login";
-		}
-		////////////////////////////////////////////////////////
-
+		
 		model.addAttribute("no", no);
 		model.addAttribute("pageNo", pageNo);
 
 		return "board/write";
 	}
 
+	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String write(HttpSession session, Model model, BoardVo vo,
+	public String write(@AuthUser UserVo authUser, BoardVo vo,
 			@RequestParam(value = "n", required = false) Long no,
 			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo) {
 
-		// Access Controll(보안, 인증체크)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "user/login";
-		}
-		////////////////////////////////////////////////////////
-
 		vo.setUserNo(authUser.getNo());
 
+		/** 글쓰기와 답글달기 **/
 		if (no == null) {
 			/** 제목 공백이면 리다이렉트 **/
 			if (vo.getTitle().length() == 0) {
@@ -147,52 +127,67 @@ public class BoardController {
 		}
 	}
 
+	@Auth
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
-	public String modify(HttpSession session,Model model,
+	public String modify(
+			@AuthUser UserVo authUser, Model model, 
 			@RequestParam(value = "n", required = false) Long no,
-			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo ) {
-		// Access Controll(보안, 인증체크)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/user/login";
-		}
-		////////////////////////////////////////////////////////////////////
-		/**로그인 유저와 글쓴이가 같은 유저인지 확인**/
-		/**NO 레코드 데이터 가져오기**/
+			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo) {
+
+		/** 로그인 유저와 글쓴이가 같은 유저인지 확인 **/
+		/** NO 레코드 데이터 가져오기 **/
 		BoardVo vo = boardService.getByno(no);
-		System.out.println(authUser);
-		System.out.println(vo);
-		if(authUser.getNo() != vo.getUserNo()) {
-			return "board/view?n="+ no +"&p=" + pageNo ;
+		if (authUser.getNo() != vo.getUserNo()) {
+			return "board/view?n=" + no + "&p=" + pageNo;
 		}
-		
+
 		model.addAttribute("vo", vo);
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("no", no);
-		
+
 		return "board/modify";
 	}
 
+	@Auth
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public String modify(HttpSession session,Model model,BoardVo vo,
-			@RequestParam(value = "n", required = false) Long no,
-			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo ) {
-		// Access Controll(보안, 인증체크)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/user/login";
-		}
-		////////////////////////////////////////////////////////////////////
-		
-		
-		
-		return "board/modify";
-	}
+	public String modify(@AuthUser UserVo authUser, BoardVo vo,
+			@RequestParam(value = "n", required = true) Long no,
+			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo) {
 
-	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public String delete(BoardVo vo) {
-		// boardService.delete(vo);
-		return "redirect:/guestbook";
+		 if(no == 0L || no == null ) {
+			 return "redirect:/board";
+		 }
+
+		/** 로그인 유저와 글쓴이가 같은 유저인지 확인 **/
+		BoardVo fvo = boardService.getByno(no);
+		if (authUser.getNo() != fvo.getUserNo()) {
+			return "board/view?n=" + no + "&p=" + pageNo;
+		}
+
+		/** 제목 글내용 업데이트 **/
+		boardService.updateTitleAndContent(vo, no);
+
+		return "redirect:/board/view?n=" + no + "&p=" + pageNo;
+	}
+    
+	@Auth
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public String delete(
+			@AuthUser UserVo authUser, 
+			@RequestParam(value = "n", required = false ) Long no,
+			@RequestParam(value = "p", required = false, defaultValue = "1") Long pageNo) {
+
+		/** 로그인 유저와 글쓴이가 같은 유저인지 확인 **/
+		BoardVo fvo = boardService.getByno(no);
+		if (authUser.getNo() != fvo.getUserNo()) {
+			return "redirect:board/" + pageNo;
+		}
+
+		fvo.setNo(no);
+
+		boardService.delete(fvo);
+
+		return "redirect:/board/" + pageNo;
 	}
 
 }
