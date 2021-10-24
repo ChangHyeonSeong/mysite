@@ -17,7 +17,7 @@ public class DeleteAction implements Action {
 		    String no = request.getParameter("no");
 		    String password = request.getParameter("password");
 		    
-		    
+		   
 		    GuestBookVo vo = new GuestBookVo();
 		    vo.setNo(Long.parseLong(no));
 		    vo.setPassword(password);
