@@ -1,6 +1,6 @@
 package com.douzone.mysite.controller;
 
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,12 +40,12 @@ public class UserController {
 		return "user/login";
 	}
 
-	@RequestMapping(value="/logout", method=RequestMethod.GET)
-	public String logout(HttpSession session) {
-		session.removeAttribute("authUser");
-		session.invalidate();
-		return "redirect:/";
-	}
+//	@RequestMapping(value="/logout", method=RequestMethod.GET)
+//	public String logout(HttpSession session) {
+//		session.removeAttribute("authUser");
+//		session.invalidate();
+//		return "redirect:/";
+//	}
 	
 //	@RequestMapping(value="/login", method=RequestMethod.POST)
 //	public String login(
