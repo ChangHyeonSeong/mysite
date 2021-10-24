@@ -65,6 +65,20 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<!-- common fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+        
+        <!-- common IO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
 
 		<!-- MariaDB JDBC Driver -->
 		<dependency>
@@ -106,6 +120,7 @@
 		</dependency>
 
 		<!-- Servlet -->
+		<!-- 서버에서 빌드하기 위해 이클립스에서도 없으면 타겟런타임 잡아줘야한다 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

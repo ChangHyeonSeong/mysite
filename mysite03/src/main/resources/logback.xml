@@ -30,8 +30,6 @@
 	</appender>
 	
 	
-
-
 	<!--
 		com.douzone.mysite.exception 아래 패키지 로그들만  \log-mysite\logex2.log 파일에만  출력하는 로거
 	-->
