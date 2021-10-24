@@ -87,3 +87,31 @@ update board
 set title = 'aaa', contents='aaa' 
 where no=1;
 select * from board order by group_no desc;
+
+
+desc gallery;
+
+insert into gallery values(null, 'test', 'test');
+
+select * from gallery;
+
+select url, comments from gallery;
+
+delete from gallery where no = 6;
+
+
+alter table user add column role enum('USER', 'ADMIN') not null default 'USER';
+
+select * from user;
+
+insert into user values(null, '관리자','admin@mysite.com', '1234','male',now(),'ADMIN');
+
+desc site;
+
+insert into site values(null, 'Mysite', '이 사이트는 웹 프로그램밍 실습과제 예제 사이트입니다.
+메뉴는 사이트 소개, 방명록, 게시판이 있구요. Java수업 + 데이터베이스 수업 + 웹프로그래밍 수업 배운 거 있는거 없는 거 다 합쳐서 만들어 놓은 사이트 입니다.', 'gallery/images/20219221314524.jpg', '이 사이트는 웹 프로그램밍 실습과제 예제 사이트입니다.
+메뉴는 사이트 소개, 방명록, 게시판이 있구요. Java수업 + 데이터베이스 수업 + 웹프로그래밍 수업 배운 거 있는거 없는 거 다 합쳐서 만들어 놓은 사이트 입니다.');
+
+select * from site;
+
+delete from site where no = 1;
