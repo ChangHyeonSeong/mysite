@@ -98,5 +98,13 @@ public class BoardService {
 	public boolean delete(BoardVo fvo) {
 		return boardRepository.delete(fvo);
 	}
+
+	public boolean checkUser(UserVo authUser, Long no) {
+		BoardVo fvo =getByno(no);
+		if (authUser.getNo() != fvo.getUserNo()) {
+			return true;
+		}
+		return false;
+	}
 	
 }

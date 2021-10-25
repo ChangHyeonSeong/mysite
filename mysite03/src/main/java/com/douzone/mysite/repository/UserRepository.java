@@ -36,57 +36,23 @@ public class UserRepository {
 	}
 	
 	public boolean delete(UserVo vo) {
-		boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = dataSource.getConnection();
-			
-			//3. SQL 준비
-			String sql = 
-				"delete"
-				+ "   from guestbook"
-				+ "  where no = ?"
-				+ "    and password = ?";
-			pstmt = conn.prepareStatement(sql);
-			
-			//4. 바인딩(binding)
-			pstmt.setLong(1, vo.getNo());
-			pstmt.setString(2, vo.getPassword());
-			
-			//5. SQL 실행
-			int count = pstmt.executeUpdate();
-			
-			result = count == 1;
-		} catch (SQLException e) {
-			System.out.println("delete error:" + e);
-		} finally {
-			// clean up
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("finally error:" + e);
-			}
-		}
-		
-		return result;		
+		return sqlSession.delete("user.delete", vo) == 1;	
 	}
 	
 
 	public UserVo findByNo(Long no) throws UserRepositoryException {
 		return sqlSession.selectOne("user.findByNo",no);
 	}
+	
+	public UserVo findByEmail(String email) {
+		return sqlSession.selectOne("user.findByEmail",email);
+	}
 
 	public boolean update(UserVo vo) {
 		return sqlSession.update("user.update",vo) == 1;
 	}
+
+	
 	
 
 }

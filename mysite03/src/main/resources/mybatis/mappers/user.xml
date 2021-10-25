@@ -33,6 +33,14 @@
 		]]>
 	</select>
 	
+	<select id="findByEmail" parameterType="string" resultType="uservo">
+		<![CDATA[
+		select name, email, password, gender
+		from user
+		where email = #{email }
+		]]>
+	</select>
+	
 	<update id ="update" parameterType="uservo">
 		<![CDATA[
 		update user
@@ -40,5 +48,14 @@
 		where no = #{no }
 		]]>
 	</update>
+	
+	<delete id ="delete" parameterType="uservo">
+		<![CDATA[
+		delete
+		from guestbook
+		where no = #{no }
+		and password = #{password }
+		]]>
+	</delete>
 	
 </mapper>

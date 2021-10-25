@@ -22,10 +22,13 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 			NativeWebRequest webRequest, 
 			WebDataBinderFactory binderFactory) throws Exception {
 		
+		// 1. 파라미터에 @AuthUser가 붙어 있는지 , 타입이 UserVO인지 확인 
 		if(supportsParameter(parameter) == false) {
+			// 내가 해석할 수 있는 파라미터가 아니다.
 			return WebArgumentResolver.UNRESOLVED;
 		}
 		
+		// 4. 여기까지 진행이 되었다면, @AuthUser가 붙어있고 타입이 UserVO인 경우이다.
 		HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
 		HttpSession session = request.getSession();
 		if(session == null) {
@@ -39,12 +42,12 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
 	public boolean supportsParameter(MethodParameter parameter) {
 		AuthUser authUser = parameter.getParameterAnnotation(AuthUser.class);
 		
-		//@AuthUser가 안 붙어 있음
+		// 2. @AuthUser가 붙어 있는지 확인
 		if(authUser == null) {
 			return false;
 		}
 		
-		//파라미터 타입이 UserVo가 아님
+		// 3. UserVO 타입이 아닌 경우
 		if(parameter.getParameterType().equals(UserVo.class) == false) {
 			return false;
 		}
