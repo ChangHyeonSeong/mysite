@@ -115,3 +115,16 @@ insert into site values(null, 'Mysite', '이 사이트는 웹 프로그램밍 �
 select * from site;
 
 delete from site where no = 1;
+
+ select b.no as no, b.title as title, b.contents as contents,
+		        u.no as userNo, b.group_no as groupNo, 
+		        b.order_no as orderNo, b.depth as depth
+		 from board b join user u on b.user_no = u.no
+		 where b.no=50;
+         
+select * from board;
+select * from guestbook;
+select * from user;
+select * from gallery;
+select no, title, welcom, profile, description from site;
+desc site;
