@@ -9,18 +9,18 @@
 	<ul>
 		<!-- ◀ -->
 		<c:choose>
-			<c:when test='${pageNo <= pRange }'>
+			<c:when test='${map.pageNo <= pRange }'>
 				<li>◀</li>
 			</c:when>
 			<c:otherwise>
 				<c:choose>
-					<c:when test='${pageNo % pRange == 0 }'>
+					<c:when test='${map.pageNo % pRange == 0 }'>
 						<li><a
-							href="${pageContext.servletContext.contextPath }/board/${pageNo - pRange }">◀</a></li>
+							href="${pageContext.servletContext.contextPath }/board/${map.pageNo - pRange }">◀</a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a
-							href="${pageContext.servletContext.contextPath }/board/${pageNo - (pageNo % pRange) }">◀</a></li>
+							href="${pageContext.servletContext.contextPath }/board/${map.pageNo - (map.pageNo % pRange) }">◀</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:otherwise>
@@ -28,14 +28,14 @@
 
 		<!-- page numbering -->
 		<c:choose>
-			<c:when test='${pageNo % pRange == 0 }'>
-				<c:forEach begin="${pageNo -  pRange + 1 }"	end="${pageNo }" var="i" step="1">
+			<c:when test='${map.pageNo % pRange == 0 }'>
+				<c:forEach begin="${map.pageNo -  pRange + 1 }"	end="${map.pageNo }" var="i" step="1">
 					<c:choose>
-						<c:when test='${i == pageNo }'>
+						<c:when test='${i == map.pageNo }'>
 							<li class="selected"><a
 								href="${pageContext.servletContext.contextPath }/board/${i }">${i }</a></li>
 						</c:when>
-						<c:when test='${i <= pageCount  }'>
+						<c:when test='${i <= map.pageCount  }'>
 							<li><a
 								href="${pageContext.servletContext.contextPath }/board/${i }">${i }</a></li>
 						</c:when>
@@ -46,13 +46,13 @@
 				</c:forEach>
 			</c:when>
 			<c:otherwise>
-				<c:forEach begin="${pageNo - (pageNo % pRange) + 1 }" end="${pageNo - (pageNo % pRange) + pRange }" var="i" step="1">
+				<c:forEach begin="${map.pageNo - (map.pageNo % pRange) + 1 }" end="${map.pageNo - (map.pageNo % pRange) + pRange }" var="i" step="1">
 					<c:choose>
-						<c:when test='${i == pageNo }'>
+						<c:when test='${i == map.pageNo }'>
 							<li class="selected"><a
 								href="${pageContext.servletContext.contextPath }/board/${i }">${i }</a></li>
 						</c:when>
-						<c:when test='${i <= pageCount  }'>
+						<c:when test='${i <= map.pageCount  }'>
 							<li><a
 								href="${pageContext.servletContext.contextPath }/board/${i }">${i }</a></li>
 						</c:when>
@@ -66,25 +66,25 @@
 
 		<!-- ▶ -->
 		<c:choose>
-			<c:when test='${pageNo % pRange == 0 }'>
+			<c:when test='${map.pageNo % pRange == 0 }'>
 				<c:choose>
-					<c:when test='${pageNo  >= pageCount  }'>
+					<c:when test='${map.pageNo  >= pageCount  }'>
 						<li>▶</li>
 					</c:when>
 					<c:otherwise>
 						<li><a
-							href="${pageContext.servletContext.contextPath }/board/${pageNo + 1 }">▶</a></li>
+							href="${pageContext.servletContext.contextPath }/board/${map.pageNo + 1 }">▶</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<c:otherwise>
 				<c:choose>
-					<c:when test='${pageNo >= (pageCount -( pageCount % pRange) +1) }'>
+					<c:when test='${map.pageNo >= (map.pageCount -( map.pageCount % pRange) +1) }'>
 						<li>▶</li>
 					</c:when>
 					<c:otherwise>
 						<li><a
-							href="${pageContext.servletContext.contextPath }/board/${(pageNo+pRange) - (pageNo%pRange) + 1 }">▶</a></li>
+							href="${pageContext.servletContext.contextPath }/board/${(map.pageNo+pRange) - (map.pageNo%pRange) + 1 }">▶</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:otherwise>

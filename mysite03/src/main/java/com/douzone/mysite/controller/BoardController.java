@@ -1,6 +1,8 @@
 package com.douzone.mysite.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.douzone.mysite.security.Auth;
 import com.douzone.mysite.security.AuthUser;
 import com.douzone.mysite.service.BoardService;
@@ -24,40 +27,9 @@ public class BoardController {
 	public String index(
 			@AuthUser UserVo authUser, Model model,
 			@PathVariable(value = "pageNo", required = false) Long pageNo) {
-
-		/** 가져올 레코드 수 **/
-		int row = 5;
-
-		/** 넘어온 페이지번호가 널이면 1셋팅 **/
-		if (pageNo == null) {
-			pageNo = 1L;
-		}
-
-		/** 넘어온 페이지넘버가 0이면 1로 대체 **/
-		if (pageNo == 0L) {
-			pageNo = 1L;
-		}
-
-		/*** 데이터 총수 가져오기 ***/
-		Long count = boardService.findCount();
-
-		/** 페이지번호 총 갯수 계산후 셋팅 **/
-		int pageCount = boardService.getPageCount(row);
-
-		/** 넘어온 페이지넘버가 현재 페이지번호 총 갯수 보다 크면 제일 큰 페이지넘버 값으로 대체 **/
-		if (pageCount > 0 && pageNo > pageCount) {
-			pageNo = Long.valueOf(pageCount);
-		}
-
-		/** 현재페이지번호에 해당되는 데이터 row개 가져오기 **/
-		List<BoardVo> limitList = boardService.findLimitList((long) row, pageNo);
-
-		model.addAttribute("limitList", limitList);
-		model.addAttribute("count", count);
-		model.addAttribute("pageCount", pageCount);
-		model.addAttribute("authUser", authUser);
-		model.addAttribute("pageNo", pageNo);
-		model.addAttribute("row", row);
+		Map<String,Object> map = boardService.inIt(pageNo,authUser);
+		
+		model.addAttribute("map", map);
 
 		return "board/list";
 	}

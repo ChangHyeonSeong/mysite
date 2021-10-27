@@ -29,19 +29,19 @@
 						<th>&nbsp;</th>
 					</tr>
 					
-					<c:forEach items='${limitList }' var='vo' varStatus='status'>
+					<c:forEach items='${map.limitList }' var='vo' varStatus='status'>
 						<tr>
-							<td>${(count - (pageNo - 1) * row )- status.index }</td>
+							<td>${(count - (map.pageNo - 1) * map.row )- status.index }</td>
 							<c:choose>
 								<c:when test='${vo.orderNo > 0 }'>
 									<td style="text-align: left; padding-left: ${20 * (vo.depth) + 20 }px">
 									<img src='${pageContext.servletContext.contextPath }/assets/images/reply.png' />
-										<a	href="${pageContext.servletContext.contextPath }/board/view?n=${vo.no }&p=${pageNo }">${vo.title }</a>
+										<a	href="${pageContext.servletContext.contextPath }/board/view?n=${vo.no }&p=${map.pageNo }">${vo.title }</a>
 									</td>
 								</c:when>
 								<c:otherwise>
 									<td style="text-align: left; padding-left: 20px">
-										<a	href="${pageContext.servletContext.contextPath }/board/view?n=${vo.no }&p=${pageNo }">${vo.title }</a>
+										<a	href="${pageContext.servletContext.contextPath }/board/view?n=${vo.no }&p=${map.pageNo }">${vo.title }</a>
 									</td>
 								</c:otherwise>
 							</c:choose>
@@ -50,8 +50,8 @@
 							<td>${vo.regDate }</td>
 							<td>
 							<c:choose>
-								<c:when test='${authUser.no == vo.userNo }'>
-								    <a href="${pageContext.servletContext.contextPath }/board/delete?n=${vo.no }&p=${pageNo }" >
+								<c:when test='${map.authUser.no == vo.userNo }'>
+								    <a href="${pageContext.servletContext.contextPath }/board/delete?n=${vo.no }&p=${map.pageNo }" >
 								      <img src='${pageContext.servletContext.contextPath }/assets/images/recycle.png' />
 								    </a>
 								</c:when>
@@ -69,7 +69,7 @@
 
 
 				<div class="bottom">
-					<a href="${pageContext.servletContext.contextPath }/board/write?p=${pageNo }" id="new-book">글쓰기</a>
+					<a href="${pageContext.servletContext.contextPath }/board/write?p=${map.pageNo }" id="new-book">글쓰기</a>
 				</div>				
 			</div>
 		</div>

@@ -1,12 +1,10 @@
 package com.douzone.mysite.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
+
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,6 @@ import com.douzone.mysite.vo.UserVo;
 
 @Repository
 public class UserRepository {
-	@Autowired
-	private DataSource dataSource;
 	
 	@Autowired
 	private SqlSession sqlSession;

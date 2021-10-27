@@ -1,10 +1,11 @@
 package com.douzone.mysite.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import com.douzone.mysite.repository.BoardRepository;
 import com.douzone.mysite.vo.BoardVo;
@@ -105,6 +106,46 @@ public class BoardService {
 			return true;
 		}
 		return false;
+	}
+
+	
+	public Map<String, Object> inIt(Long pageNo, UserVo authUser) {
+		
+		/** 가져올 레코드 수 **/
+		int row = 5;
+
+		/** 넘어온 페이지번호가 널이면 1셋팅 **/
+		if (pageNo == null) {
+			pageNo = 1L;
+		}
+
+		/** 넘어온 페이지넘버가 0이면 1로 대체 **/
+		if (pageNo == 0L) {
+			pageNo = 1L;
+		}
+
+		/*** 데이터 총수 가져오기 ***/
+		Long count = findCount();
+
+		/** 페이지번호 총 갯수 계산후 셋팅 **/
+		int pageCount = getPageCount(row);
+
+		/** 넘어온 페이지넘버가 현재 페이지번호 총 갯수 보다 크면 제일 큰 페이지넘버 값으로 대체 **/
+		if (pageCount > 0 && pageNo > pageCount) {
+			pageNo = Long.valueOf(pageCount);
+		}
+
+		/** 현재페이지번호에 해당되는 데이터 row개 가져오기 **/
+		List<BoardVo> limitList = findLimitList((long) row, pageNo);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("limitList", limitList);
+		map.put("count", count);
+		map.put("pageCount", pageCount);
+		map.put("authUser", authUser);
+		map.put("pageNo", pageNo);
+		map.put("row", row);
+		return map;
 	}
 	
 }
