@@ -31,7 +31,7 @@
 					
 					<c:forEach items='${map.limitList }' var='vo' varStatus='status'>
 						<tr>
-							<td>${(count - (map.pageNo - 1) * map.row )- status.index }</td>
+							<td>${(map.count - (map.pageNo - 1) * map.row )- status.index }</td>
 							<c:choose>
 								<c:when test='${vo.orderNo > 0 }'>
 									<td style="text-align: left; padding-left: ${20 * (vo.depth) + 20 }px">

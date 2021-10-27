@@ -78,6 +78,7 @@ public class BoardService {
 		upvo.setTitle(vo.getTitle());
 		upvo.setContents(vo.getContents());
         upvo.setUserNo(vo.getUserNo());
+        
         upvo.setGroupNo(fvo.getGroupNo());
 	    upvo.setOrderNo(fvo.getOrderNo() + 1);
 	    upvo.setDepth(fvo.getDepth() + 1);

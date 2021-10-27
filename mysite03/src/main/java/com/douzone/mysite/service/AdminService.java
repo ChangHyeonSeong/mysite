@@ -27,7 +27,10 @@ public class AdminService {
 
 	public SiteVo alterData(MultipartFile multipartFile, SiteVo siteVo) {
 		String url = SaveImg(multipartFile, "Saved by admin");
-		siteVo.setProfileURL(url); 
+		if(url != null) {
+			siteVo.setProfileURL(url);
+		}
+		System.out.println("--------------------------------------------------             " + siteVo);
 		siteRepository.updateAll(siteVo);
 		return siteVo;
 	}
