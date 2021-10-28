@@ -18,7 +18,7 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile" src="${pageContext.request.contextPath }/${siteVo.profileURL }">
+					<img id="profile" src="${pageContext.request.contextPath }${siteVo.profileURL }">
 					<h2>${siteVo.welcomeMessage } </h2>
 					<p>${fn:replace(siteVo.description, newline, "<br/>") }<br/>
 						<a href="${pageContext.request.contextPath }/guestbook">방명록</a>에 글 남기기<br>
