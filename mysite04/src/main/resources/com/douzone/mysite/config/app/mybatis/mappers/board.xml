@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<insert id ="insert" parameterType="boardvo">
+		<![CDATA[
+		insert into board values(null, #{title }, #{contents }, 0, now(), ifnull((select max(b.group_no) from board b),0) + 1, 0, 0, #{userNo })
+		]]>
+	 
+	</insert>
+	
+	<select id="findAll"  parameterType="map" resultType="boardvo">
+		<![CDATA[
+		select b.no as no, b.title as title, b.contents as contents, b.hit as hit, 
+		       date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') as regDate, 
+		       b.group_no as groupNo, b.order_no as orderNo, b.depth as depth, u.name as name, u.no as userNo
+		from board b join user u on b.user_no = u.no 
+		order by group_no desc, order_no asc limit #{begin },#{row }
+		]]>
+	</select>
+	
+	<select id="findByNo"  parameterType="long" resultType="boardvo">
+		<![CDATA[
+		 select b.no as no, b.title as title, b.contents as contents,
+		        u.no as userNo, b.group_no as groupNo, 
+		        b.order_no as orderNo, b.depth as depth
+		 from board b join user u on b.user_no = u.no
+		 where b.no=#{no }
+		]]>
+	</select>
+	
+	<select id="findCount"  resultType="long">
+		<![CDATA[
+		select count(*)
+		from board
+		]]>
+	</select>
+	
+	<delete id="delete" parameterType="boardvo">
+		<![CDATA[
+		delete from board where no = #{no }
+		]]>
+	</delete>
+	
+	<update id ="updateHit" parameterType="long">
+		<![CDATA[
+		update board
+        set hit = hit + 1
+		where no = #{no }
+		]]>
+	</update>
+	
+	<update id ="updateTitleAndContent" parameterType="map">
+		<![CDATA[
+		update board
+		set title = #{title }, contents = #{contents }
+		where no = #{no }
+		]]>
+	</update>
+	
+	<update id ="update" parameterType="boardvo">
+		<![CDATA[
+		update board
+		set order_no = order_no + 1
+		where group_no = #{groupNo } and order_no > #{orderNo }
+		]]>
+	</update>
+	
+	<insert id ="insertReply" parameterType="boardvo">
+		<![CDATA[
+		insert into board values(null, #{title }, #{contents }, 0, now(), #{groupNo } , #{orderNo }, #{depth }, #{userNo })
+		]]>
+	</insert>
+
+</mapper>
