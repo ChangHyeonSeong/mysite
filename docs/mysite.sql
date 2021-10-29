@@ -128,3 +128,4 @@ select * from user;
 select * from gallery;
 select no, title, welcom, profile, description from site;
 desc site;
+select * from site;
