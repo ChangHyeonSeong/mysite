@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 				
 		// 2. 요청 구분
 		// 만약, JSON 요청인 경우 request header의 Accept에 application/json
-		// 만약, html 요청인 경우 request header의 Accept에 application/json
+		// 만약, html 요청인 경우 request header의 accept에 text/html
 		
 		String accept = request.getHeader("accept");
 		if(accept.matches(".*application/json.*")) {
