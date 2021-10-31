@@ -114,7 +114,7 @@ insert into site values(null, 'Mysite', '이 사이트는 웹 프로그램밍 �
 
 select * from site;
 
-delete from site where no = 1;
+delete from user where no = 7;
 
  select b.no as no, b.title as title, b.contents as contents,
 		        u.no as userNo, b.group_no as groupNo, 
