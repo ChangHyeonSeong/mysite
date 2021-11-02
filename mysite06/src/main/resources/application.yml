@@ -1,0 +1,101 @@
+# active spring boot profile
+spring:
+   prifile: 
+      active: dev
+---
+
+# common - spring boot confuguration
+spring:
+
+   # devtools - live reload
+   devtools:
+      livereload:
+         enabled: true
+
+   # mvc
+   mvc:
+      view:
+         prefix: /WEB-INF/views/
+         suffix: .jsp
+   # http
+   http:
+      encoding:
+         charset: utf-8
+         enabled: true
+         forced: false
+         forced-request: false
+         forced-response: false
+
+   # datasource
+   datasource:
+      driver-Class-Name: org.mariadb.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/webdb?characterEncoding=utf8
+      username: webdb
+      password: webdb
+      initialSize: 10
+      maxActive: 20
+
+# message resource(Internationalization)
+   message:
+      always-message-format: true
+      basename: messages/messages_ko
+      encoding: utf-8
+
+# multipart
+   servlet:
+      multipart:
+         enabled: true
+         max-file-size: 50MB
+         max-request-size: 50MB
+
+# aop(@EnbleAspectJAutoProxy)
+   aop:
+      auto: true
+      proxy-target-class: true
+
+---
+# production profile - spring boot confuguration
+spring:
+   profile: production
+
+   # datasource
+   datasource:
+      driver-Class-Name: org.mariadb.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/webdb?characterEncoding=utf8
+      username: webdb
+      password: fdjkshafjksld
+      initialSize: 10
+      maxActive: 20
+
+---
+# dev production profile - spring boot confuguration
+spring:
+   profile: dev
+
+   # datasource
+   datasource:
+      driver-Class-Name: org.mariadb.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/webdb?characterEncoding=utf8
+      username: webdb
+      password: webdb
+      initialSize: 10
+      maxActive: 20
+
+---
+# server
+server:
+   port: 8888
+   servlet:
+      context-path: /mysite06
+
+---
+# mybatis
+mybatis:
+   config-location: classpath:mybatis/configuration.xml
+
+---
+# logging
+logging:
+   config: classpath:logback.xml
+
+
