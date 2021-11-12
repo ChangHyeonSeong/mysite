@@ -68,6 +68,21 @@ $(function(){
 			}
 		}
 	});
+	//스크롤 이벤트
+	$(window).scroll(function(){
+		var $window = $(this);
+		var $document = $(document);
+
+		var windowHeight = $window.height();
+		var documentHeight = $document.height();
+		var scrollTop = $window.scrollTop();
+
+		if(scrollTop + windowHeight + 30 > documentHeight) {
+			fetch();
+			console.log("fetch() call!!");
+			
+		}
+	});
 	
 	// 글 삭제 버튼 (Live Event) ////미래에 생길 태그들의 이벤트를 미리 설정?
 	$(document).on('click', '#list-guestbook li a', function(event){
