@@ -32,6 +32,14 @@ public class GuestbookService {
 		result = guestbookRepository.delete(vo);
 		return result;
 	}
+
+	public List<GuestbookVo> getList(Long no) {
+		if(no < 0 ) {
+			return guestbookRepository.findAll().subList(0, 4);
+		}
+		List<GuestbookVo> list = guestbookRepository.findAll(no);
+		return list;
+	}
 	
 	
 }

@@ -9,9 +9,37 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/guestbook-spa.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/ejs/ejs.js"></script>
 <script>
+
+var listEJS = new EJS({
+	url: '${pageContext.request.contextPath }/ejs/list-template.ejs'
+});
+
+var startNo;
+
+var fetch = function() {
+	var url = '${pageContext.request.contextPath }/api/guestbook/list' + (startNo ? ('?sn=' + startNo) : '');
+	console.log("url : " + url);
+	
+	$.ajax({
+		url: url,
+		dataType: 'json',
+		type: 'get',
+		success: function(response) {
+			console.log(response);
+			
+			var html = listEJS.render(response);
+			$("#list-guestbook").append(html);
+			
+			startNo = $('#list-guestbook li').last().data('no') || 0;
+			console.log('startNo : ' + startNo);
+		}
+	});
+}
+
 var messageBox = function(title, message, callback) {
 	$('#dialog-message').attr('title', title);
 	$('#dialog-message p').text(message);
@@ -75,6 +103,7 @@ $(function(){
 	
 	
 	// 첫번쨰 리스트 가져오기
+	fetch();
 });
 </script>
 </head>
@@ -84,46 +113,13 @@ $(function(){
 		<div id="content">
 			<div id="guestbook">
 				<h1>방명록</h1>
-				<form id="add-form" action="" method="post">
+				<form id="add-form" action="${pageContext.request.contextPath }/guestbook/add" method="post">
 					<input type="text" id="input-name" placeholder="이름">
 					<input type="password" id="input-password" placeholder="비밀번호">
 					<textarea id="tx-content" placeholder="내용을 입력해 주세요."></textarea>
 					<input type="submit" value="보내기" />
 				</form>
-				<ul id="list-guestbook">
-
-					<li data-no='2'>
-						<strong>지나가다가</strong>
-						<p>
-							별루입니다.<br>
-							비번:1234 -,.-
-						</p>
-						<strong></strong>
-						<a href='' data-no='2'>삭제</a> 
-					</li>
-					
-					<li data-no=''>
-						<strong>둘리</strong>
-						<p>
-							안녕하세요<br>
-							홈페이지가 개 굿 입니다.
-						</p>
-						<strong></strong>
-						<a href='' data-no=''>삭제</a> 
-					</li>
-
-					<li data-no=''>
-						<strong>주인</strong>
-						<p>
-							아작스 방명록 입니다.<br>
-							테스트~
-						</p>
-						<strong></strong>
-						<a href='' data-no=''>삭제</a> 
-					</li>
-					
-									
-				</ul>
+				<ul id="list-guestbook"></ul>
 			</div>
 			<div id="dialog-delete-form" title="메세지 삭제" style="display:none">
   				<p class="validateTips normal">작성시 입력했던 비밀번호를 입력하세요.</p>
