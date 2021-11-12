@@ -35,7 +35,7 @@ public class GuestbookService {
 
 	public List<GuestbookVo> getList(Long no) {
 		if(no < 0 ) {
-			return guestbookRepository.findAll().subList(0, 4);
+			return guestbookRepository.findAll().subList(0, 5);
 		}
 		List<GuestbookVo> list = guestbookRepository.findAll(no);
 		return list;
