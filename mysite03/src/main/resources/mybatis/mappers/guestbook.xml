@@ -24,6 +24,12 @@
 		]]>
 	</delete>
 	
+	<delete id="deleteByNoPassword" parameterType="map">
+		<![CDATA[
+		delete from guestbook where no=#{no } and password=#{password }
+		]]>
+	</delete>
+	
 	<select id="findAll" resultType="guestbookvo">
 		<![CDATA[
 		  select no, name, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as regDate, message

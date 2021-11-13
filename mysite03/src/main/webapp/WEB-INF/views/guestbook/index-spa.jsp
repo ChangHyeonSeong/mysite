@@ -18,6 +18,10 @@ var listEJS = new EJS({
 	url: '${pageContext.request.contextPath }/ejs/list-template.ejs'
 });
 
+var listItemEJS = new EJS({
+	url: '${pageContext.request.contextPath }/ejs/listitem-template.ejs'   //동기로 통신된다
+});
+
 var startNo;
 
 var fetch = function() {
@@ -62,12 +66,38 @@ $(function(){
 		buttons: {
 			"삭제": function() {
 				// ajax 삭제....
+				var no = $('#hidden-no').val();
+				var password = $('#password-delete').val();
+				var url = '${pageContext.request.contextPath }/api/guestbook/delete/' + no;
+				
+				$.ajax({
+					url: url,
+					type: 'post',
+					dataType: 'json',
+					data: 'password=' + password,
+					success: function(response) {
+						console.log(response);
+						
+						// 삭제가 안된 경우						
+						if(response.data == -1) {
+							$('.validateTips.error').show();
+							$('#password-delete').val('').focus();
+							return;
+						}
+						
+						// 삭제가 된 경우
+						$('#list-guestbook li[data-no=' + response.data + ']').remove();
+						$('#password-delete').val('')
+						dialogDelete.dialog('close');
+					}
+				});
 			},
 			"취소": function() {
 				$(this).dialog('close');
 			}
 		}
 	});
+	
 	//스크롤 이벤트
 	$(window).scroll(function(){
 		var $window = $(this);
@@ -84,8 +114,8 @@ $(function(){
 		}
 	});
 	
-	// 글 삭제 버튼 (Live Event) ////미래에 생길 태그들의 이벤트를 미리 설정?
-	$(document).on('click', '#list-guestbook li a', function(event){
+	// 글 삭제 버튼 (Live Event) ////미래에 생길 태그들의 이벤트를 미리 설정, //코뿔소 p667
+	$(document).on('click', '#list-guestbook li a', function(event){ //.on() -> .bind() + .delegate() + live()
 		event.preventDefault();
 		
 		var no = $(this).data('no');
@@ -109,11 +139,53 @@ $(function(){
 		}
 		
 		// 비밀번호
-
+        var password = $("#input-password").val();
+		if(!password) {
+			messageBox('새글 작성', '비밀번호는 반드시 입력해야 합니다.', function(){
+				$("#input-password").focus();	
+			});
+			return;
+		}
 		// 내용
-		
+		var content = $("#tx-content").val();
+		if(!content) {
+			messageBox('새글 작성', '내용은 반드시 입력해야 합니다.', function(){
+				$("#tx-content").focus();	
+			});
+			return;
+		}
 		
 		console.log("ajax insert");
+		
+		vo = {};
+		
+		vo.name = $('#input-name').val();
+		vo.password = $('#input-password').val();
+		vo.message = $('#tx-content').val();
+		
+		console.log(vo);
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath }/api/guestbook/add',
+			type: 'post',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: JSON.stringify(vo),
+			success: function(response) {
+				
+				if(response.result !== 'success') {
+					console.error(response.message);
+					return;
+				} 
+				
+				var html = listItemEJS.render(response.data);
+				$('#list-guestbook').prepend(html);
+				$("#add-form")[0].reset();     //elemets.reset();
+			},
+			error: function(xhr, code, message){   // 통신에러, 여기서는 톰캣이 무조건 에러 페이지를 보내므로 올일이 거의 없다
+				console.error(message);
+			}
+		});
 	});
 	
 	

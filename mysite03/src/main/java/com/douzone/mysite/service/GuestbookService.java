@@ -1,6 +1,8 @@
 package com.douzone.mysite.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,13 @@ public class GuestbookService {
 		}
 		List<GuestbookVo> list = guestbookRepository.findAll(no);
 		return list;
+	}
+
+	public boolean delete(Long no, String password) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("password", password);
+		return guestbookRepository.deleteByNoPassword(map);
 	}
 	
 	

@@ -28,8 +28,7 @@ public class GuestbookController {
 	@RequestMapping("/add")
 	public JsonResult ex1(@RequestBody GuestbookVo vo){
 		// guestbookService.addMessage(vo)를 사용해서 등록작업
-		vo.setNo(1L);
-		vo.setPassword("");
+		guestbookService.add(vo);
 		
 		return JsonResult.success(vo);
 	}
@@ -46,16 +45,18 @@ public class GuestbookController {
 	@ResponseBody
 	@RequestMapping("/delete/{no}")
 	public JsonResult ex3(@PathVariable("no") Long no, String password) {
-		// result = guestbookService.deleteMessage(no, password)를 사용해서 삭제작업
 		
 		Long data = 0L;
+		boolean result = guestbookService.delete(no, password);
 		
 		//1. 삭제가 안된 경우
-		data = -1L;
-		
+		if(result == false) {
+			data = -1L;
+			return JsonResult.success(data);
+		}
 		//2. 삭제가 된 경우
 		data = no;
-		
+
 		return JsonResult.success(data);
 	}
 	

@@ -1,6 +1,8 @@
 package com.douzone.mysite.repository;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,6 +32,10 @@ public class GuestbookRepository {
 
 	public List<GuestbookVo> findAll(Long no) {
 		return sqlSession.selectList("guestbook.findAllByNo",no);
+	}
+
+	public boolean deleteByNoPassword(Map<String, Object> map) {
+		return sqlSession.delete("guestbook.deleteByNoPassword",map) == 1;
 	}
 
 
